@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import WeatherResults from '../components/WeatherResults';
+import WeatherResults from '../components/results/WeatherResults';
+import ConvertTimestamp from '../components/convertTime/convertTimestamp';
 
 export default class WeatherSearch extends Component {
 
 	OPEN_WEATHER_SEARCH_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
-	OPEN_WEATHER_API_KEY 	  = '&appid=32c5ffb87028a14d9034601ba5f9da63';
-	METRIC_UNIT 						= '&units=metric'; 
+	OPEN_WEATHER_API_KEY = '&appid=32c5ffb87028a14d9034601ba5f9da63';
+	METRIC_UNIT = '&units=metric';
 
 	constructor(){
     super();
     this.state = {
 			data: [],
 			search: '',
-		} 
+		}
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);   
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 	componentDidMount(){
@@ -39,18 +40,19 @@ export default class WeatherSearch extends Component {
   	if(location) {
 			$.get(this.OPEN_WEATHER_SEARCH_URL + location + this.OPEN_WEATHER_API_KEY + this.METRIC_UNIT)
 	  	.then(res => {
-	      //console.log(res);
+	  		//console.log(res);
 	      this.setState({
 	        data: {
 	        	city: res.name,
 	        	country: res.sys.country,
 	        	currentWeather: res.weather[0].description,
 	        	currentTemp: res.main.temp,
-	        	sunrise: res.sys.sunrise,
-	        	sunset: res.sys.sunset,
+	        	sunrise: <ConvertTimestamp timestamp={res.sys.sunrise} />,
+	        	sunset: <ConvertTimestamp timestamp={res.sys.sunset} />,
 	        },
 	      });
 	  	});
+	  	console.log(this.state.data.sunrise);
   	}
   }
 
