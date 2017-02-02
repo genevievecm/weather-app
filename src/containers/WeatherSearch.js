@@ -49,7 +49,7 @@ export default class WeatherSearch extends Component {
   getWeather(location) {
   	if(location) {
 			$.get(this.API_BASE_URL + location + this.API_KEY + this.METRIC_UNIT)
-	  	.then(res => {
+      .then(res => {
 	  		//console.log(res);
 	      this.setState({
 	        data: {
@@ -70,14 +70,14 @@ export default class WeatherSearch extends Component {
    return (
       <div>
         <form onSubmit={this.handleSubmit}>
-        	<SearchInput search={this.state.search} onChange={this.handleChange.bind(this)} />
+        	<SearchInput
+            search={this.state.search}
+            onChange={this.handleChange.bind(this)} />
         	<SearchButton />
         </form>
-        {this.handleSubmit ?
-        	{this.state.data.city ?
-        		<WeatherResults results={this.state.data} />
-        	: <p>We could not find any results. Please try another city!</p>}
-        : null}
+        <div className="results">
+        	{ this.state.data.city ? <WeatherResults results={this.state.data} /> : '' }
+        </div>
       </div>
     );
   }
