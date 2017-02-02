@@ -1,11 +1,9 @@
-//import React from 'react';
-
-export default function ConvertTimestamp(props) {
-		console.log(props.timestamp);
-  	let d = new Date(props.timestamp * 1000),	// Convert timestamp to milliseconds
+export default function ConvertTimestamp(timestamp) {
+  	
+  	let d = new Date(timestamp * 1000),	// Convert timestamp to milliseconds
 		hour = d.getHours(),
 		h = hour,
-		min = d.getMinutes(),
+		min = ('0' + d.getMinutes()).slice(-2),
 		ampm = 'AM',
 		time;
 

@@ -1,37 +1,22 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+
+//components
+import SearchInput from '../components/inputs/SearchInput';
+import SearchButton from '../components/buttons/SearchButton';
 import WeatherResults from '../components/results/WeatherResults';
-//import { ConvertTimestamp } from '../components/convertTime/convertTimestamp';
 
-function ConvertTimestamp(timestamp) {
-  	
-  	let d = new Date(timestamp * 1000),	// Convert timestamp to milliseconds
-		hour = d.getHours(),
-		h = hour,
-		min = ('0' + d.getMinutes()).slice(-2),
-		ampm = 'AM',
-		time;
+//helper functions
+import ConvertTimestamp from '../components/convertTimestamp/convertTimestamp';
 
-		if (hour > 12) {
-			h = hour - 12;
-			ampm = 'PM';
-		} else if (hour === 12) {
-			h = 12;
-			ampm = 'PM';
-		} else if (hour === 0) {
-			h = 12;
-		}
-
-		time = h + ':' + min + ' ' + ampm;
-
-		return time;
-}
+//styles
+import '../App.css';
 
 
 export default class WeatherSearch extends Component {
 
-	OPEN_WEATHER_SEARCH_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
-	OPEN_WEATHER_API_KEY = '&appid=32c5ffb87028a14d9034601ba5f9da63';
+	API_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
+	API_KEY = '&appid=32c5ffb87028a14d9034601ba5f9da63';
 	METRIC_UNIT = '&units=metric';
 
 	constructor(){
@@ -63,7 +48,7 @@ export default class WeatherSearch extends Component {
   //api request
   getWeather(location) {
   	if(location) {
-			$.get(this.OPEN_WEATHER_SEARCH_URL + location + this.OPEN_WEATHER_API_KEY + this.METRIC_UNIT)
+			$.get(this.API_BASE_URL + location + this.API_KEY + this.METRIC_UNIT)
 	  	.then(res => {
 	  		//console.log(res);
 	      this.setState({
@@ -85,10 +70,14 @@ export default class WeatherSearch extends Component {
    return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <input type='text' value={this.state.search} onChange={this.handleChange} />
-          <input type='submit' value='Search' />
+        	<SearchInput search={this.state.search} onChange={this.handleChange.bind(this)} />
+        	<SearchButton />
         </form>
-        <WeatherResults results={this.state.data} />
+        {this.handleSubmit ?
+        	{this.state.data.city ?
+        		<WeatherResults results={this.state.data} />
+        	: <p>We could not find any results. Please try another city!</p>}
+        : null}
       </div>
     );
   }
