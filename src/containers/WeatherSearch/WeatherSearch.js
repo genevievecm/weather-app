@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 
 //components
-import SearchInput from '../components/inputs/SearchInput';
-import SearchButton from '../components/buttons/SearchButton';
-import WeatherResults from '../components/results/WeatherResults';
+import SearchInput from '../../components/Inputs/SearchInput';
+import SearchButton from '../../components/Buttons/SearchButton';
+import WeatherResults from '../../components/WeatherResults/WeatherResults';
 
 //helper functions
-import ConvertTimestamp from '../components/convertTimestamp/convertTimestamp';
-
-//styles
-import '../App.css';
-
+import ConvertTimestamp from '../../components/ConvertTimestamp/ConvertTimestamp';
 
 export default class WeatherSearch extends Component {
 
